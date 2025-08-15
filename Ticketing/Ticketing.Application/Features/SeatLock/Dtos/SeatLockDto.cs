@@ -1,9 +1,8 @@
-﻿using Ticketing.Domain.Abstractions;
+﻿namespace Ticketing.Application.Features.SeatLock.Dtos;
 
-namespace Ticketing.Domain.Entities;
-
-public sealed class SeatLock : Entity
+public class SeatLockDto
 {
+    public Guid Id { get; set; }
     public DateTime CreationTime { get; set; }
     public DateTime ValidUntil { get; set; }
     public string LockCode { get; set; } = string.Empty;

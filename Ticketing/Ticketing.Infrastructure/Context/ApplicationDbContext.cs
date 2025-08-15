@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ticketing.Domain.Entities;
+using Ticketing.Domain.Enum;
 
 namespace Ticketing.Infrastructure.Context
 {
@@ -12,9 +13,9 @@ namespace Ticketing.Infrastructure.Context
         {
         }
 
-       // public DbSet<Event> Events { get; set; }
+        public DbSet<Event> Events { get; set; }
         public DbSet<Seat> Seats { get; set; }
-       // public DbSet<Ticket> Tickets { get; set; }
+        // public DbSet<Ticket> Tickets { get; set; }
         public DbSet<SeatLock> SeatLocks { get; set; }
         public DbSet<PhysicalSeatLayout> PhysicalSeatLayouts { get; set; }
 
@@ -27,6 +28,7 @@ namespace Ticketing.Infrastructure.Context
             builder.Ignore<IdentityUserToken<Guid>>();
             builder.Ignore<IdentityUserRole<Guid>>();
             builder.Ignore<IdentityUserClaim<Guid>>();
+            builder.Ignore<EventStateEnum>();
         }
     }
 }

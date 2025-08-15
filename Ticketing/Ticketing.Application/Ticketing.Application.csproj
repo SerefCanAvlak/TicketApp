@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Ticketing.Domain\Ticketing.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Seats\Commands\" />
+  </ItemGroup>
+
 </Project>
