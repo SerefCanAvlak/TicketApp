@@ -15,7 +15,7 @@ namespace Ticketing.Infrastructure.Context
 
         public DbSet<Event> Events { get; set; }
         public DbSet<Seat> Seats { get; set; }
-        // public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<SeatLock> SeatLocks { get; set; }
         public DbSet<PhysicalSeatLayout> PhysicalSeatLayouts { get; set; }
 
@@ -29,6 +29,8 @@ namespace Ticketing.Infrastructure.Context
             builder.Ignore<IdentityUserRole<Guid>>();
             builder.Ignore<IdentityUserClaim<Guid>>();
             builder.Ignore<EventStateEnum>();
+            builder.Ignore<TicketStateEnum>();
+
         }
     }
 }

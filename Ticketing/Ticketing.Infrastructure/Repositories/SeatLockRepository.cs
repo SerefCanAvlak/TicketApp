@@ -34,4 +34,27 @@ internal sealed class SeatLockRepository : Repository<SeatLock, ApplicationDbCon
         return await _context.SeatLocks
             .AnyAsync(sl => sl.EventId == eventId && sl.SeatId == seatId);
     }
+
+    public async Task<SeatLock?> TryAddLockAsync(Guid eventId, Guid seatId, DateTime validUntil, string lockCode)
+    {
+        var seatLock = new SeatLock
+        {
+            EventId = eventId,
+            SeatId = seatId,
+            ValidUntil = validUntil,
+            LockCode = lockCode,
+            CreationTime = DateTime.UtcNow
+        };
+
+        try
+        {
+            _context.SeatLocks.Add(seatLock);
+            await _context.SaveChangesAsync();
+            return seatLock; // track edilen entity’yi geri döndür
+        }
+        catch
+        {
+            return null;
+        }
+    }
 }
