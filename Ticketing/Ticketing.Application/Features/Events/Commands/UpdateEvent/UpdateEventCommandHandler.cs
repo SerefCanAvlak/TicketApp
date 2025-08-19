@@ -16,17 +16,15 @@ internal sealed class UpdateEventCommandHandler(
     public async Task<EventDto> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
     {
         var entity = await eventRepository.GetByExpressionWithTrackingAsync(
-            e => e.Id == request.Id, cancellationToken);
-
-        if (entity is null)
-            throw new Exception("Event bulunamadı");
-
-        if (!string.Equals(entity.State.Name, request.UpdateEventDto.State, StringComparison.OrdinalIgnoreCase))
+    e => e.Id == request.Id, cancellationToken) ?? throw new Exception("Event bulunamadı");
+        if (!string.Equals(entity.State.Name, request.State, StringComparison.OrdinalIgnoreCase))
         {
-            entity.State = EventStateEnum.FromName(request.UpdateEventDto.State, true);
+            entity.State = EventStateEnum.FromName(request.State, true);
         }
 
-        mapper.Map(request.UpdateEventDto, entity);
+        entity.Name = request.Name;
+        entity.EventStart = request.EventStart;
+        entity.PhysicalSeatLayoutId = request.PhysicalSeatLayoutId;
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

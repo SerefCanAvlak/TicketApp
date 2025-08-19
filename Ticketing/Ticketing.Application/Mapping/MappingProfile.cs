@@ -13,14 +13,6 @@ namespace Ticketing.Application.Mapping
     {
         public MappingProfile()
         {
-            CreateMap<CreateEventDto, Event>()
-                .ForMember(dest => dest.State,
-                    opt => opt.MapFrom(src => EventStateEnum.FromName(src.State, true)));
-
-            CreateMap<UpdateEventDto, Event>()
-                .ForMember(dest => dest.State,
-                    opt => opt.MapFrom(src => EventStateEnum.FromName(src.State, true)));
-
             CreateMap<EventDto, Event>()
                 .ForMember(dest => dest.State,
                     opt => opt.MapFrom(src => EventStateEnum.FromName(src.State, true)));

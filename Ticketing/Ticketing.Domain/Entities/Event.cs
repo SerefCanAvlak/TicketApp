@@ -6,7 +6,7 @@ namespace Ticketing.Domain.Entities;
 public sealed class Event : Entity
 {
     public string Name { get; set; } = string.Empty;
-    public DateOnly EventStart { get; set; }
+    public DateTime EventStart { get; set; }
     public int StateId { get; set; }
     public EventStateEnum State
     {

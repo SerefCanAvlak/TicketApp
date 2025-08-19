@@ -1,10 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
 using Ticketing.Application.Features.Events.Commands.CreateEvent;
 using Ticketing.Application.Features.Events.Commands.DeleteEvent;
 using Ticketing.Application.Features.Events.Commands.UpdateEvent;
 using Ticketing.Application.Features.Events.Dtos;
-using Ticketing.Application.Features.Events.Queries;
+using Ticketing.Application.Features.Events.Queries.GetEvents;
+using Ticketing.Application.Features.Events.Queries.GetUpcomingEvents;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ticketing.WebAPI.Controllers
 {
@@ -20,11 +23,10 @@ namespace Ticketing.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EventDto>> Create([FromBody] CreateEventDto createEventDto)
+        public async Task<ActionResult<EventDto>> CreateEvent([FromBody] CreateEventCommand command, CancellationToken cancellationToken)
         {
-            var command = new CreateEventCommand(createEventDto);
-            var result = await _mediator.Send(command);
-            return Ok(result);
+            var createdEvent = await _mediator.Send(command, cancellationToken);
+            return Ok(createdEvent);
         }
 
         [HttpGet]
@@ -35,12 +37,14 @@ namespace Ticketing.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventDto updateEventDto, CancellationToken cancellationToken)
+        public async Task<ActionResult<EventDto>> UpdateEvent(Guid id, [FromBody] UpdateEventCommand command)
         {
-                var command = new UpdateEventCommand(id, updateEventDto);
-                var updatedEvent = await _mediator.Send(command, cancellationToken);
-                return Ok(updatedEvent);
+            var commandWithId = command with { Id = id };
+            var updatedEvent = await _mediator.Send(commandWithId);
+            return Ok(updatedEvent);
         }
+
+
 
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteEvent(Guid id)
@@ -48,5 +52,13 @@ namespace Ticketing.WebAPI.Controllers
             await _mediator.Send(new DeleteEventByIdCommand(id));
             return NoContent();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetUpcomingEvents(CancellationToken cancellationToken)
+        {
+            var events = await _mediator.Send(new GetUpcomingEventsQuery(), cancellationToken);
+            return Ok(events);
+        }
+
     }
 }

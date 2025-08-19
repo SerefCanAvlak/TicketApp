@@ -15,12 +15,15 @@ internal sealed class CreateEventCommandHandler(
 {
     public async Task<EventDto> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
-        var entity = mapper.Map<Event>(request.Event);
+        var entity = new Event
+        {
+            Name = request.Name,
+            EventStart = request.EventStart,
+            PhysicalSeatLayoutId = request.PhysicalSeatLayoutId,
+            State = EventStateEnum.FromName(request.State, true)
+        };
 
-        entity.State = EventStateEnum.FromName(request.Event.State, true);
-        
         await eventRepository.AddAsync(entity, cancellationToken);
-
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return mapper.Map<EventDto>(entity);

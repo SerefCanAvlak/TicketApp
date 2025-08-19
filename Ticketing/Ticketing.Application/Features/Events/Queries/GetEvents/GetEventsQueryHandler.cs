@@ -5,7 +5,7 @@ using Ticketing.Application.Features.Events.Dtos;
 using Ticketing.Domain.Interfaces;
 
 
-namespace Ticketing.Application.Features.Events.Queries;
+namespace Ticketing.Application.Features.Events.Queries.GetEvents;
 
 internal sealed class GetEventsQueryHandler(
     IEventRepository eventRepository,

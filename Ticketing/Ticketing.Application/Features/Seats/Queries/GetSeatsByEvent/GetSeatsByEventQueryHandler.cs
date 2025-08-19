@@ -4,10 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Ticketing.Application.Features.Seats.Dtos;
 using Ticketing.Domain.Interfaces;
 
-namespace Ticketing.Application.Features.Seats.Queries;
-
-public sealed record GetSeatsByEventQuery(Guid EventId): IRequest<List<SeatDto>>;
-
+namespace Ticketing.Application.Features.Seats.Queries.GetSeatsByEvent;
 
 internal sealed class GetSeatsByEventQueryHandler(
     ISeatRepository seatRepository,
