@@ -1,25 +1,21 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading;
 using Ticketing.Application.Features.Events.Commands.CreateEvent;
 using Ticketing.Application.Features.Events.Commands.DeleteEvent;
 using Ticketing.Application.Features.Events.Commands.UpdateEvent;
 using Ticketing.Application.Features.Events.Dtos;
 using Ticketing.Application.Features.Events.Queries.GetEvents;
 using Ticketing.Application.Features.Events.Queries.GetUpcomingEvents;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Ticketing.WebAPI.Abstractions;
 
 namespace Ticketing.WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class EventsController : ControllerBase
+    public class EventsController : ApiController
     {
-        private readonly IMediator _mediator;
-
-        public EventsController(IMediator mediator)
+        public EventsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpPost]

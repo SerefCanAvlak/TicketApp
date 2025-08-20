@@ -3,18 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application.Features.Seats.Dtos;
 using Ticketing.Application.Features.Seats.Queries.GetFreeSeatsByEvent;
 using Ticketing.Application.Features.Seats.Queries.GetSeatsByEvent;
+using Ticketing.WebAPI.Abstractions;
 
 namespace Ticketing.WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SeatsController : ControllerBase
+    public class SeatsController : ApiController
     {
-        private readonly IMediator _mediator;
-
-        public SeatsController(IMediator mediator)
+        public SeatsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet]
@@ -29,7 +27,7 @@ namespace Ticketing.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetFreeSeats(Guid eventId)
+        public async Task<IActionResult> GetFreeSeatsByEvent(Guid eventId)
         {
             var seats = await _mediator.Send(new GetFreeSeatsByEventQuery(eventId));
             return Ok(seats);

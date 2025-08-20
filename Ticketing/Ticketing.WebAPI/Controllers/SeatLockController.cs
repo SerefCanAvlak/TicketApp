@@ -2,18 +2,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application.Features.SeatLock.Commands.LockSeat;
 using Ticketing.Application.Features.SeatLock.Queries;
+using Ticketing.WebAPI.Abstractions;
 
 namespace Ticketing.WebAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class SeatLockController : ControllerBase
+public class SeatLockController : ApiController
 {
-    private readonly IMediator _mediator;
-
-    public SeatLockController(IMediator mediator)
+    public SeatLockController(IMediator mediator) : base(mediator)
     {
-        _mediator = mediator;
     }
 
     [HttpPost]

@@ -5,18 +5,16 @@ using Ticketing.Application.Features.Ticket.Commands.CreateTicket;
 using Ticketing.Application.Features.Ticket.Dtos;
 using Ticketing.Application.Features.Ticket.Queries.GetAllTickets;
 using Ticketing.Application.Features.Ticket.Queries.GetTicketsByEvent;
+using Ticketing.WebAPI.Abstractions;
 
 namespace Ticketing.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class TicketsController : ControllerBase
+    public class TicketsController : ApiController
     {
-        private readonly IMediator _mediator;
-
-        public TicketsController(IMediator mediator)
+        public TicketsController(IMediator mediator) : base(mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpPost]
@@ -49,7 +47,7 @@ namespace Ticketing.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTicketsByEvent(Guid eventId)
+        public async Task<IActionResult> GetAllTicketsByEvent(Guid eventId)
         {
             var tickets = await _mediator.Send(new GetTicketsByEventQuery(eventId));
             return Ok(tickets);
