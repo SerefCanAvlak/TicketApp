@@ -3,6 +3,7 @@ using GenericRepository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Ticketing.Application.Features.Ticket.Dtos;
+using Ticketing.Application.Services;
 using Ticketing.Domain.Enum;
 using Ticketing.Domain.Interfaces;
 
@@ -11,6 +12,7 @@ namespace Ticketing.Application.Features.Ticket.Commands.CreateTicket;
 internal sealed class CreateTicketCommandHandler(
     ITicketRepository ticketRepository,
     ISeatLockRepository seatLockRepository,
+    ILogService logService,
     IUnitOfWork unitOfWork,
     IMapper mapper) : IRequestHandler<CreateTicketCommand, TicketDto?>
 {
@@ -65,6 +67,8 @@ internal sealed class CreateTicketCommandHandler(
          seatLockRepository.Delete(seatLock);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        logService.Info($"Bilet oluşturuldu. TicketId: {ticket.Id}, EventId: {ticket.EventId}, SeatId: {ticket.SeatId}, OwnerName: {ticket.OwnerName}");
 
         return mapper.Map<TicketDto>(ticket);
     }

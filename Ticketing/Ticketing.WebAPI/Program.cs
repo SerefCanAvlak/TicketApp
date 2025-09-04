@@ -1,11 +1,28 @@
 using DefaultCorsPolicyNugetPackage;
+using log4net;
+using log4net.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using Ticketing.Application;
+using Ticketing.Application.Services;
 using Ticketing.Infrastructure;
+using Ticketing.Infrastructure.Services;
 using Ticketing.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<ILogService, LogService>();
+
+var entryAssembly = Assembly.GetEntryAssembly();
+if (entryAssembly == null)
+{
+    throw new InvalidOperationException("Entry assembly could not be determined.");
+}
+var logRepository = LogManager.GetRepository(entryAssembly);
+XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
+
+var logger = LogManager.GetLogger(typeof(Program));
+logger.Info("Uygulama baþlatýldý");
 
 builder.Services.AddDefaultCors();
 builder.Services.AddApplication();

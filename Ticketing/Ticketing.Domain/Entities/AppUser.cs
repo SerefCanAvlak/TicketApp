@@ -10,4 +10,5 @@ public sealed class AppUser : IdentityUser<Guid>
     public string? RefreshToken { get; set; }
     public DateTime? RefreshTokenExpires { get; set; }
     public bool IsDeleted { get; set; } = false;
+    public bool IsAdmin { get; set; }
 }

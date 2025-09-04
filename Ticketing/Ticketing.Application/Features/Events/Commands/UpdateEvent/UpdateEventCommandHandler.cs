@@ -2,6 +2,7 @@
 using GenericRepository;
 using MediatR;
 using Ticketing.Application.Features.Events.Dtos;
+using Ticketing.Application.Services;
 using Ticketing.Domain.Enum;
 using Ticketing.Domain.Interfaces;
 
@@ -11,6 +12,7 @@ namespace Ticketing.Application.Features.Events.Commands.UpdateEvent;
 internal sealed class UpdateEventCommandHandler(
     IEventRepository eventRepository,
     IMapper mapper,
+    ILogService lockService,
     IUnitOfWork unitOfWork) : IRequestHandler<UpdateEventCommand, EventDto>
 {
     public async Task<EventDto> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
@@ -27,6 +29,8 @@ internal sealed class UpdateEventCommandHandler(
         entity.PhysicalSeatLayoutId = request.PhysicalSeatLayoutId;
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
+
+        lockService.Info($"Etkinlik güncellendi. EventId: {entity.Id}, EventName: {entity.Name}");
 
         return mapper.Map<EventDto>(entity);
     }

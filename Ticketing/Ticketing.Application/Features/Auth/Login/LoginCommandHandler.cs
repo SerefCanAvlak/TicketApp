@@ -9,6 +9,7 @@ namespace Ticketing.Application.Features.Auth.Login
     internal sealed class LoginCommandHandler(
         UserManager<AppUser> userManager,
         SignInManager<AppUser> signInManager,
+        ILogService logService,
         IJwtProvider jwtProvider) : IRequestHandler<LoginCommand, LoginCommandResponse>
     {
         public async Task<LoginCommandResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -38,6 +39,8 @@ namespace Ticketing.Application.Features.Auth.Login
 
             if (!signInResult.Succeeded)
                 throw new Exception("Şifreniz yanlış");
+
+            logService.Info($"Kullanıcı giriş yaptı. UserId: {user.Id}, UserName: {user.UserName}");
 
             return await jwtProvider.CreateToken(user);
         }
