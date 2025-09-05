@@ -12,8 +12,6 @@ public class LogReadService(IConfiguration configuration) : ILogReadService
     private readonly string _connectionString = configuration.GetConnectionString("SqlServer")
     ?? throw new InvalidOperationException("Connection string 'SqlServer' is not configured.");
 
-
-
     public async Task<List<LogDto>> GetLatestLogsAsync(int take = 50)
     {
         using var conn = new SqlConnection(_connectionString);

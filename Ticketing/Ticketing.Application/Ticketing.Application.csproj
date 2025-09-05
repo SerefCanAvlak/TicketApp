@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Seats\Commands\" />
-    <Folder Include="Features\Users\Commands\" />
   </ItemGroup>
 
 </Project>

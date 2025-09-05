@@ -14,7 +14,7 @@ namespace Ticketing.WebAPI.Controllers
         {
         }
 
-        [HttpGet("GetLatest")]
+        [HttpGet]
         public async Task<ActionResult<List<LogDto>>> GetLatest(int? take = 5)
         {
             var logs = await _mediator.Send(new GetLatestLogsQuery(take ?? int.MaxValue));
