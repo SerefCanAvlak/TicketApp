@@ -22,7 +22,7 @@ var logRepository = LogManager.GetRepository(entryAssembly);
 XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
 var logger = LogManager.GetLogger(typeof(Program));
-logger.Info("Uygulama baþlatýldý");
+logger.Info("Sunucu baþlatýldý");
 
 builder.Services.AddDefaultCors();
 builder.Services.AddApplication();

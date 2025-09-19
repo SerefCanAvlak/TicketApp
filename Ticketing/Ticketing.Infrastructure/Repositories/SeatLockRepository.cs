@@ -6,7 +6,7 @@ using Ticketing.Infrastructure.Context;
 
 namespace Ticketing.Infrastructure.Repositories;
 
-internal sealed class SeatLockRepository : Repository<SeatLock, ApplicationDbContext>, ISeatLockRepository
+public sealed class SeatLockRepository : Repository<SeatLock, ApplicationDbContext>, ISeatLockRepository
 {
     private readonly ApplicationDbContext _context;
 

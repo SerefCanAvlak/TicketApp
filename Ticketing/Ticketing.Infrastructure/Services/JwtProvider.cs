@@ -11,7 +11,7 @@ using Ticketing.Infrastructure.Options;
 
 namespace Ticketing.Infrastructure.Services
 {
-    internal class JwtProvider(
+    public class JwtProvider(
         UserManager<AppUser> userManager,
         IOptions<JwtOptions> jwtOptions) : IJwtProvider
     {

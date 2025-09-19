@@ -5,7 +5,7 @@ using Ticketing.Infrastructure.Context;
 
 namespace Ticketing.Infrastructure.Repositories;
 
-internal sealed class SeatRepository : Repository<Seat, ApplicationDbContext>, ISeatRepository
+public sealed class SeatRepository : Repository<Seat, ApplicationDbContext>, ISeatRepository
 {
     public SeatRepository(ApplicationDbContext context) : base(context)
     {

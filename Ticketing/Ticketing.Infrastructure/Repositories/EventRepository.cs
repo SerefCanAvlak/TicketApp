@@ -5,7 +5,7 @@ using Ticketing.Infrastructure.Context;
 
 namespace Ticketing.Infrastructure.Repositories;
 
-internal sealed class EventRepository : Repository<Event, ApplicationDbContext>, IEventRepository
+public sealed class EventRepository : Repository<Event, ApplicationDbContext>, IEventRepository
 {
     public EventRepository(ApplicationDbContext context) : base(context)
     {
