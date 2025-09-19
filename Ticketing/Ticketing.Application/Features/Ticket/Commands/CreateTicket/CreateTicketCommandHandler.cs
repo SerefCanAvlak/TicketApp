@@ -9,7 +9,7 @@ using Ticketing.Domain.Interfaces;
 
 namespace Ticketing.Application.Features.Ticket.Commands.CreateTicket;
 
-internal sealed class CreateTicketCommandHandler(
+public sealed class CreateTicketCommandHandler(
     ITicketRepository ticketRepository,
     ISeatLockRepository seatLockRepository,
     ILogService logService,
