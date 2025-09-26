@@ -1,4 +1,5 @@
 using DefaultCorsPolicyNugetPackage;
+using GenericRepository;
 using log4net;
 using log4net.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,7 +7,9 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Ticketing.Application;
 using Ticketing.Application.Services;
+using Ticketing.Domain.Entities;
 using Ticketing.Infrastructure;
+using Ticketing.Infrastructure.Context;
 using Ticketing.Infrastructure.Services;
 using Ticketing.WebAPI.Middlewares;
 
@@ -30,6 +33,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
+builder.Services.AddScoped<IRepository<Notification>, Repository<Notification, ApplicationDbContext>>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

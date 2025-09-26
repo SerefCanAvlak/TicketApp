@@ -18,6 +18,8 @@ namespace Ticketing.Infrastructure.Context
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<SeatLock> SeatLocks { get; set; }
         public DbSet<PhysicalSeatLayout> PhysicalSeatLayouts { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,7 +32,7 @@ namespace Ticketing.Infrastructure.Context
             builder.Ignore<IdentityUserClaim<Guid>>();
             builder.Ignore<EventStateEnum>();
             builder.Ignore<TicketStateEnum>();
-
+            builder.Ignore<NotificationStatusEnum>();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Ticketing.Application.Features.Events.Dtos;
-using Ticketing.Application.Features.Events.Queries;
 using Ticketing.Application.Features.SeatLock.Dtos;
 using Ticketing.Application.Features.Seats.Dtos;
 using Ticketing.Application.Features.Ticket.Dtos;
