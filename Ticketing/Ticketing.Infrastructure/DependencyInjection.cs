@@ -42,8 +42,8 @@ namespace Ticketing.Infrastructure
 
             services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
             services.ConfigureOptions<JwtTokenOptionsSetup>();
-            services.AddAuthentication()
-                .AddJwtBearer();
+            //services.AddAuthentication()
+            //    .AddJwtBearer();
             services.AddAuthorizationBuilder();
 
             services.Scan(action =>

@@ -1,5 +1,4 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using Ticketing.Application.Features.Events.Commands.FinishExpiredEvents;
 using Ticketing.Application.Services;
 

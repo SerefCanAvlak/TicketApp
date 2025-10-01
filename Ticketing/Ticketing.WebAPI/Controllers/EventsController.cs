@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Ticketing.Application.Features.Events.Commands.CreateEvent;
 using Ticketing.Application.Features.Events.Commands.DeleteEvent;
@@ -10,6 +11,7 @@ using Ticketing.WebAPI.Abstractions;
 
 namespace Ticketing.WebAPI.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class EventsController : ApiController

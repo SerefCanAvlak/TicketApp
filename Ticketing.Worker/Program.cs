@@ -15,9 +15,6 @@ using Ticketing.Infrastructure.Services;
 using Ticketing.Worker.Configuration;
 using Ticketing.Worker.Jobs;
 using Ticketing.Worker.Services;
-using FluentEmail.Core;
-using FluentEmail.Smtp;
-using System.Net.Mail;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -38,6 +35,9 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(FinishExpiredEventsCommandHandler).Assembly);
 });
+
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
@@ -56,7 +56,9 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 .AddDefaultTokenProviders();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
-builder.Services.AddScoped<IWorkerJob, NotificationJob>();
+//builder.Services.AddScoped<IWorkerJob, NotificationJob_inMemory>();
+builder.Services.AddScoped<IWorkerJob, NotificationJob_EventDriven>();
+//builder.Services.AddScoped<IWorkerJob, NotificationJob_RabbitMQ>();
 
 builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 builder.Services.AddScoped<IRepository<Notification>, Repository<Notification, ApplicationDbContext>>();

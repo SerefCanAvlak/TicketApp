@@ -3,6 +3,7 @@ using GenericRepository;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Ticketing.Application.Features.Notification.Events;
 using Ticketing.Application.Features.Ticket.Dtos;
 using Ticketing.Application.Services;
 using Ticketing.Domain.Entities;
@@ -13,9 +14,10 @@ namespace Ticketing.Application.Features.Ticket.Commands.CreateTicket;
 
 public sealed class CreateTicketCommandHandler(
     ITicketRepository ticketRepository,
+    IMediator mediator,
     ISeatLockRepository seatLockRepository,
-    IEventRepository eventRepository,
-    IRepository<Notification> notificationRepository,
+  //  IEventRepository eventRepository,
+ //   INotificationRepository notificationRepository,
     ILogService logService,
     IUnitOfWork unitOfWork,
     UserManager<AppUser> userManager,
@@ -75,28 +77,37 @@ public sealed class CreateTicketCommandHandler(
 
         logService.Info($"Bilet oluşturuldu. TicketId: {ticket.Id}, EventId: {ticket.EventId}, SeatId: {ticket.SeatId}, OwnerName: {ticket.OwnerName}");
         // Mail Send
-        var eventEntity = await eventRepository.GetByExpressionWithTrackingAsync(e => e.Id == request.EventId, cancellationToken) ?? throw new Exception("Event bulunamadı");
+       // var eventEntity = await eventRepository.GetByExpressionWithTrackingAsync(e => e.Id == request.EventId, cancellationToken) ?? throw new Exception("Event bulunamadı");
 
         var user = await userManager.FindByIdAsync(request.UserId.ToString());
 
         var email = user?.Email;
+        // in memory yaklaşımı için
+        //if (!string.IsNullOrWhiteSpace(email))
+        //{
+        //    var notification = new Ticketing.Domain.Entities.Notification
+        //    {
+        //        Id = Guid.NewGuid(),
+        //        To = email,
+        //        Subject = "Biletiniz oluşturuldu",
+        //        Body = $"Merhaba {request.OwnerName}, {eventEntity?.Name} etkinliği için biletiniz oluşturuldu. Koltuk Numaranız: {request.SeatId} (buraya bi el atabilirim)",
+        //        Status = NotificationStatusEnum.Pending,
+        //        CreatedAt = DateTime.UtcNow
+        //    };
 
-        if (!string.IsNullOrWhiteSpace(email))
-        {
-            var notification = new Notification
-            {
-                Id = Guid.NewGuid(),
-                To = email,
-                Subject = "Biletiniz oluşturuldu",
-                Body = $"Merhaba {request.OwnerName}, {eventEntity?.Name} etkinliği için biletiniz oluşturuldu.",
-                Status = NotificationStatusEnum.Pending,
-                CreatedAt = DateTime.UtcNow
-            };
+        //    await notificationRepository.AddAsync(notification, cancellationToken);
+        //}
+        //await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await notificationRepository.AddAsync(notification, cancellationToken);
-        }
-
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        // event driven yaklaşımı için
+        await mediator.Publish(new TicketCreatedEvent(
+            ticket.Id,             
+            request.EventId,       
+            request.UserId,        
+            request.OwnerName,     
+            request.SeatId,        
+            email!                 
+        ), cancellationToken);
 
         return mapper.Map<TicketDto>(ticket);
     }

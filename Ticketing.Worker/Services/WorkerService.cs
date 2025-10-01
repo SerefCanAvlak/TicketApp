@@ -1,16 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Options;
 using Ticketing.Worker.Configuration;
 using Ticketing.Worker.Jobs;
 
 namespace Ticketing.Worker.Services
 {
-    internal class WorkerService : BackgroundService
+    public class WorkerService : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ILogger<WorkerService> _logger;
